@@ -4,7 +4,12 @@ Tool designed for the needs of the METIS FTTH team.
 
 # Usage
 
-In order to access the files, run the commands detailed below OR execute the bash/bat with the following arguments:
+In order to access the files, run the following commands:
+
+**Process an isolated container:**
+
+`docker run -d=false --name altitude_export_run omarcel/altitude_pg2shp:latest $1 $2 $3 $4 $5 $6 $7`
+
 - $1: Code NRO (integer)
 - $2: Code SRO (integer)
 - $3: Version postfix (string)
@@ -12,11 +17,6 @@ In order to access the files, run the commands detailed below OR execute the bas
 - $5: PostgreSQL host (string)
 - $6: PostgreSQL user (string)
 - $7: PostgreSQL password (string)
-
-
-**Process an isolated container:**
-
-`docker run -d=false --name altitude_export_run omarcel/altitude_pg2shp:latest $1 $2 $3 $4 $5 $6 $7`
 
 **Copy container output to host:**
 

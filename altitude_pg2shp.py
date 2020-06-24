@@ -18,11 +18,16 @@ def export_data(nro, sro, version='A1', folder='/home/', host='localhost', user=
         'ZACABLE': f'SELECT nom as "NOM" , nb_prises as "NB_PRISES" , commentair as "COMMENTAIR" , geom FROM metis.zacable WHERE nro = {nro} AND sro = {sro};',
         'ZAPBO': f'SELECT nom as "NOM" , nb_prises as "NB_PRISES" , commentair as "COMMENTAIR" , isole as "ISOLE" , geom FROM metis.zapbo WHERE nro = {nro} AND sro = {sro};',
         'ZASRO': f'SELECT ref_sro as "REF_SRO" , ref_nro as "REF_NRO" , nb_prise as "NB_PRISE" , epci as "EPCI" , planning as "PLANNING" , sst as "SST" , geom FROM metis.zasro WHERE nro = {nro} AND sro = {sro};',
+        'ZANRO': f'SELECT id AS "SID", ref_nro AS "REF_NRO", ref_nra AS "REF_NRA", degroup AS "DEGROUP", bt_sfr AS "BT_SFR", nb_prise AS "NB_PRISE", planning AS "PLANNING", sst AS "SST", zone AS "ZONE", zn_code AS "ZN_CODE", sst_rang2 AS "SST_RANG2", geom AS "GEOM" FROM circet.zanro WHERE substring(ref_nro, 4, 3)::int = {nro};'
     }
 
     for table, req in sql.items():
+        file = None
+        if table == 'ZANRO':
+            file = f'31_{str(nro).zfill(3)}_ENS_ZANRO_{version}'
+        else:
+            file = f'31_{str(nro).zfill(3)}_{str(sro).zfill(3)}_{table}_{version}'
 
-        file = f'31_{str(nro).zfill(3)}_{str(sro).zfill(3)}_{table}_{version}'
         command = f'ogr2ogr --config SHAPE_ENCODING "LATIN1" -f "ESRI Shapefile" '
         command += f'{export_folder}/{file}.shp '
         command += f'PG:"host={host} user={user} password={password} dbname={dbname}" '
