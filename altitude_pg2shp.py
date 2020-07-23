@@ -37,7 +37,7 @@ def export_data(nro, sro, version='A1', folder='/home/', host='localhost', user=
 
         qml_src = f'static/{table}.qml'
         qml_out = f'{export_folder}/{file}.qml'
-        shutil.copy(qml_src, qml_out)
+        copy(qml_src, qml_out)
 
         try:
             result = run(command, shell=True, check=True,
