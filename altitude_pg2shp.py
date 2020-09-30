@@ -4,9 +4,9 @@ from pathlib import Path
 from shutil import copy
 
 
-def export_data(nro, sro, version='A1', folder='/home/', host='localhost', user='postgres', password='postgres', dbname='altitude'):
+def export_data(dep, nro, sro, version='A1', folder='/home/', host='localhost', user='postgres', password='postgres', dbname='altitude'):
     run('set PGCLIENTENCODING=latin1', shell=True)
-    export_folder = Path(folder) / f'31_{str(nro).zfill(3)}_{str(sro).zfill(3)}_{version}'
+    export_folder = Path(folder) / f'{str(dep).zfill(2)}_{str(nro).zfill(3)}_{str(sro).zfill(3)}_{version}'
     export_folder.mkdir(exist_ok=True)
 
     sql = {
@@ -25,9 +25,9 @@ def export_data(nro, sro, version='A1', folder='/home/', host='localhost', user=
     for table, req in sql.items():
         file = None
         if table == 'ZANRO':
-            file = f'31_{str(nro).zfill(3)}_ENS_ZANRO_{version}'
+            file = f'{str(dep).zfill(2)}_{str(nro).zfill(3)}_ENS_ZANRO_{version}'
         else:
-            file = f'31_{str(nro).zfill(3)}_{str(sro).zfill(3)}_{table}_{version}'
+            file = f'{str(dep).zfill(2)}_{str(nro).zfill(3)}_{str(sro).zfill(3)}_{table}_{version}'
 
         command = f'ogr2ogr --config SHAPE_ENCODING "LATIN1" -f "ESRI Shapefile" '
         command += f'{export_folder}/{file}.shp '
@@ -51,12 +51,13 @@ def export_data(nro, sro, version='A1', folder='/home/', host='localhost', user=
 
 
 if __name__ == "__main__":
-    nro = int(sys.argv[1])
-    sro = int(sys.argv[2])
-    version = sys.argv[3]
-    folder = sys.argv[4]
-    host = sys.argv[5]
-    user = sys.argv[6]
-    password = sys.argv[7]
+    dep = int(sys.argv[1])
+    nro = int(sys.argv[2])
+    sro = int(sys.argv[3])
+    version = sys.argv[4]
+    folder = sys.argv[5]
+    host = sys.argv[6]
+    user = sys.argv[7]
+    password = sys.argv[8]
     
-    export_data(nro=nro, sro=sro, version=version, folder=folder, host=host, user=user, password=password)
+    export_data(dep = dep, nro=nro, sro=sro, version=version, folder=folder, host=host, user=user, password=password)
